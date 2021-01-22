@@ -73,7 +73,12 @@ RandomAccessFile.prototype._read = function (req) {
 
   function onread (err, read) {
     if (err) return req.callback(err)
-    if (!read) return req.callback(new Error('Could not satisfy length'))
+    if (!read){
+      //when there's a corrupt file, this error will occured
+      //return req.callback(new Error('Could not satisfy length'))
+      //fix with this
+      return req.callback(null, data)
+    }
 
     req.size -= read
     req.offset += read
